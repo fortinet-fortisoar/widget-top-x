@@ -1,4 +1,4 @@
-<form data-ng-submit="save()" class="noMargin" name="editWidgetForm" data-ng-class="{'state-wait': processing }"
+<form data-ng-submit="save()" class="noMargin" name="editTop3WidgetForm" data-ng-class="{'state-wait': processing }"
     novalidate>
     <div class="modal-header">
         <h3 class="modal-title col-md-9">Top 3 Edit View</h3>
@@ -9,14 +9,14 @@
     </div>
     <div class="modal-body">
         <div class="form-group"
-            data-ng-class="{ 'has-error': editWidgetForm.title.$invalid && editWidgetForm.title.$touched }">
+            data-ng-class="{ 'has-error': editTop3WidgetForm.title.$invalid && editTop3WidgetForm.title.$touched }">
             <label for="title" class="control-label">Title<span class="text-danger">*</span></label> <input id="title"
                 name="title" type="text" data-ng-model="config.title" class="form-control" />
-            <div data-cs-messages="editWidgetForm.title"></div>
+            <div data-cs-messages="editTop3WidgetForm.title"></div>
         </div>
         <div>
             <div
-                data-ng-class="{ 'has-error': editWidgetForm.moduleType.$invalid && editWidgetForm.moduleType.$touched }">
+                data-ng-class="{ 'has-error': editTop3WidgetForm.moduleType.$invalid && editTop3WidgetForm.moduleType.$touched }">
                 <label for="moduleType" class="control-label">Select Module Type</label><span
                     class="text-danger">*</span>
                 <select name="moduleType" id="moduleType" class="form-control" style="width:30%"
@@ -28,7 +28,7 @@
 
             <div data-ng-if="config.moduleType !== undefined">
                 <div id="modulesDropdown" class="form-group" data-ng-if="modules"
-                    data-ng-class="{ 'has-error': editWidgetForm.module.$invalid && editWidgetForm.module.$touched }">
+                    data-ng-class="{ 'has-error': editTop3WidgetForm.module.$invalid && editTop3WidgetForm.module.$touched }">
                     <label for="module" class="control-label">Data Source
                         <span class="text-danger">*</span>
                     </label>
@@ -47,9 +47,9 @@
                         <span class="text-danger">*</span>
                     </label>
                     <div data-cs-conditional data-ng-if="config.fieldsArray.length > 0" data-fields="config.fields"
-                        data-reset-field="config.fields" data-ng-model="config.query" data-parent-form="editWidgetForm"
+                        data-reset-field="config.fields" data-ng-model="config.query" data-parent-form="editTop3WidgetForm"
                         data-enable-expression="(page==='dashboard' || page==='reporting')" data-show-uuid="true"
-                        data-form-name="'editWidgetForm'">
+                        data-form-name="'editTop3WidgetForm'">
                     </div>
                 </div>
                 <div data-ng-if="config.moduleType  == 'Across Modules'">

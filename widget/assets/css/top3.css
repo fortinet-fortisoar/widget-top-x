@@ -2,9 +2,6 @@
     border-radius: 4px;
     height: 80px;
     width: 350px;
-    margin-top: 20px;
-    display: block;
-    margin-left: 10px;
 }
 
 .innder-div-text {
@@ -17,7 +14,6 @@
 }
 
 .inner-outer-div {
-    display: inline-block;
     font-size: 25px;
     padding-top: 24px;
     padding-left: 10px;

@@ -5,6 +5,7 @@
         .controller('top3100Ctrl', top3100Ctrl);
 
     top3100Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope', 'dynamicVariableService'];
+    const EnableGlobalVisiblityBroadcast = 'EnableGlobalVisiblityBroadcast';
 
     function top3100Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope, dynamicVariableService) {
         //array of colours for the layers
@@ -12,13 +13,11 @@
             "border-left:4px solid rgba(66, 235, 245, 0.7);background: linear-gradient(90deg, rgba(32, 180, 189, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
             " border-left:4px solid #DC1982;background: linear-gradient(90deg, rgba(152, 19, 91, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
             "border-left:4px solid rgba(65, 41, 203, 0.7); background: linear-gradient(90deg, rgba(45, 17, 209, 0.6) 0%, rgba(10, 31, 46, 0) 100%);"
-        ]
-
+        ]   
 
         function init() {
             dynamicVariableService.loadDynamicVariables().then(function (dynamicVariables) {
-                var name = "WidgetGlobalVariable";
-                $scope.globalVariables = getObjectById(dynamicVariables, name);
+                $scope.globalVariables = getObjectById(dynamicVariables, EnableGlobalVisiblityBroadcast);
                 eventListner();
             });
             if ($scope.config.moduleType == 'Across Modules') { getTop3records(); }
@@ -172,7 +171,7 @@
             for (let [key, value] of Object.entries(element)) {
 
                 var leftBorderElement = document.createElement('div');
-                leftBorderElement.setAttribute('class', 'layer-border-left');
+                leftBorderElement.setAttribute('class', 'layer-border-left margin-top-20 display-block margin-left-md');
                 leftBorderElement.setAttribute('id', key + "-leftBorderElement");
                 leftBorderElement.setAttribute('style', $scope.colors[index])
 
@@ -187,7 +186,7 @@
                 innerNumberElement.innerHTML = value;
 
                 var innerOuterDiv = document.createElement('div');
-                innerOuterDiv.setAttribute('class', 'inner-outer-div');
+                innerOuterDiv.setAttribute('class', 'inner-outer-div displai-inline-block');
                 innerOuterDiv.setAttribute('id', key + "-innerOuterDiv");
 
                 innerOuterDiv.appendChild(innerTextElement);
