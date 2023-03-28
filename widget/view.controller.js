@@ -147,7 +147,7 @@
                 innerNumberElement.innerHTML = value;
 
                 var innerOuterDiv = document.createElement('div');
-                innerOuterDiv.setAttribute('class', 'inner-outer-div displai-inline-block');
+                innerOuterDiv.setAttribute('class', 'inner-outer-div display-inline-block padding-left-md');
                 innerOuterDiv.setAttribute('id', key + "-innerOuterDiv");
 
                 innerOuterDiv.appendChild(innerTextElement);
