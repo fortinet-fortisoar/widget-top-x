@@ -128,6 +128,7 @@
             var innerOuterDiv = document.createElement('div');
             innerOuterDiv.setAttribute('class', 'inner-outer-div');
             var index = 0;
+            parentDiv.setAttribute('style', 'padding-top: 1px');
 
             for (let [key, value] of Object.entries(element)) {
 
@@ -157,8 +158,6 @@
 
                 index++;
             }
-
-
         }
     }
 })();
