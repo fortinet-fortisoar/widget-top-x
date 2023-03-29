@@ -75,7 +75,7 @@
                     })
                 }
                 if (data === undefined) {
-                    _dataSource = { "Invalid key... ": "" }
+                    _dataSource = { "Invalid key ": "" }
                 }
                 else {
                     var dataArray = Object.entries(data);
