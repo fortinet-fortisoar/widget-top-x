@@ -1,6 +1,6 @@
 .layer-border-left {
     border-radius: 4px;
-    height: 73px;
+    height: 80px;
     width: 350px;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .inner-outer-div {
-    font-size: 22px;
+    font-size: 25px;
     padding-top: 24px;
-    color: rgba(192, 195, 198, 1);
+    padding-left: 10px;
 }

@@ -5,6 +5,7 @@
         .controller('top3100Ctrl', top3100Ctrl);
 
     top3100Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope', 'dynamicVariableService'];
+    const EnableGlobalVisiblityBroadcast = 'EnableGlobalVisiblityBroadcast';
 
     function top3100Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope, dynamicVariableService) {
         //array of colours for the layers
@@ -15,10 +16,48 @@
         ]   
 
         function init() {
+            dynamicVariableService.loadDynamicVariables().then(function (dynamicVariables) {
+                $scope.globalVariables = getObjectById(dynamicVariables, EnableGlobalVisiblityBroadcast);
+                eventListner();
+            });
             if ($scope.config.moduleType == 'Across Modules') { getTop3records(); }
             else { getRecordsFromCustomModule(); }
         }
         init();
+
+        function getObjectById(data, name) {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].name === name) {
+                    if (data[i].value === "true") {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+            return false; // return false if no object with the given id is found
+        }
+
+        function eventListner(){
+            if($scope.globalVariables){
+                $rootScope.$on('GlobalVisiblityEvent', function (event, data) {
+                    if($scope.config.funnelModuleType == 'Single Module'){
+                        $scope.config.query.filters = [];
+                        $scope.config.query.filters.push(
+                            {
+                                field: "id",
+                                operator: "eq",
+                                type: "primitive",
+                                value: data,
+                                _operator: "eq"
+                            }
+                        )
+                        getRecordsFromCustomModule(true)
+                    }
+                })
+            }
+        }
 
         function getTop3records() {
             //building query
@@ -75,7 +114,7 @@
                     })
                 }
                 if (data === undefined) {
-                    _dataSource = { "Invalid key ": "" }
+                    _dataSource = { "Key is invalid... ": "" }
                 }
                 else {
                     var dataArray = Object.entries(data);
@@ -128,7 +167,6 @@
             var innerOuterDiv = document.createElement('div');
             innerOuterDiv.setAttribute('class', 'inner-outer-div');
             var index = 0;
-            parentDiv.setAttribute('style', 'padding-top: 1px');
 
             for (let [key, value] of Object.entries(element)) {
 
@@ -148,7 +186,7 @@
                 innerNumberElement.innerHTML = value;
 
                 var innerOuterDiv = document.createElement('div');
-                innerOuterDiv.setAttribute('class', 'inner-outer-div display-inline-block padding-left-md');
+                innerOuterDiv.setAttribute('class', 'inner-outer-div displai-inline-block');
                 innerOuterDiv.setAttribute('id', key + "-innerOuterDiv");
 
                 innerOuterDiv.appendChild(innerTextElement);
@@ -158,6 +196,8 @@
 
                 index++;
             }
+
+
         }
     }
 })();
