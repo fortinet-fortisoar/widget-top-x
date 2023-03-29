@@ -2,11 +2,11 @@
 (function () {
     angular
         .module('cybersponse')
-        .controller('editTop3100Ctrl', editTop3100Ctrl);
+        .controller('editTop3101Ctrl', editTop3101Ctrl);
 
-    editTop3100Ctrl.$inject = ['$scope', '$uibModalInstance', 'config', 'appModulesService', 'Entity'];
+    editTop3101Ctrl.$inject = ['$scope', '$uibModalInstance', 'config', 'appModulesService', 'Entity'];
 
-    function editTop3100Ctrl($scope, $uibModalInstance, config, appModulesService, Entity) {
+    function editTop3101Ctrl($scope, $uibModalInstance, config, appModulesService, Entity) {
         $scope.cancel = cancel;
         $scope.save = save;
         $scope.config = config;
@@ -69,9 +69,9 @@
         }
 
         function save() {
-            if ($scope.editWidgetForm.$invalid) {
-                $scope.editWidgetForm.$setTouched();
-                $scope.editWidgetForm.$focusOnFirstError();
+            if ($scope.editTop3WidgetForm.$invalid) {
+                $scope.editTop3WidgetForm.$setTouched();
+                $scope.editTop3WidgetForm.$focusOnFirstError();
                 return;
             }
             $uibModalInstance.close($scope.config);

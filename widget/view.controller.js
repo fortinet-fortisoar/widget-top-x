@@ -2,12 +2,12 @@
 (function () {
     angular
         .module('cybersponse')
-        .controller('top3100Ctrl', top3100Ctrl);
+        .controller('top3101Ctrl', top3101Ctrl);
 
-    top3100Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope', 'dynamicVariableService'];
+    top3101Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope', 'dynamicVariableService'];
     const EnableGlobalVisiblityBroadcast = 'EnableGlobalVisiblityBroadcast';
 
-    function top3100Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope, dynamicVariableService) {
+    function top3101Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope, dynamicVariableService) {
         //array of colours for the layers
         $scope.colors = [
             "border-left:4px solid rgba(66, 235, 245, 0.7);background: linear-gradient(90deg, rgba(32, 180, 189, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
@@ -186,7 +186,7 @@
                 innerNumberElement.innerHTML = value;
 
                 var innerOuterDiv = document.createElement('div');
-                innerOuterDiv.setAttribute('class', 'inner-outer-div displai-inline-block');
+                innerOuterDiv.setAttribute('class', 'inner-outer-div display-inline-block');
                 innerOuterDiv.setAttribute('id', key + "-innerOuterDiv");
 
                 innerOuterDiv.appendChild(innerTextElement);
