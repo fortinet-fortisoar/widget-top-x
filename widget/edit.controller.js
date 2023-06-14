@@ -2,11 +2,11 @@
 (function () {
     angular
         .module('cybersponse')
-        .controller('editTop3101Ctrl', editTop3101Ctrl);
+        .controller('editTop3100Ctrl', editTop3100Ctrl);
 
-    editTop3101Ctrl.$inject = ['$scope', '$uibModalInstance', 'config', 'appModulesService', 'Entity'];
+    editTop3100Ctrl.$inject = ['$scope', '$uibModalInstance', 'config', 'appModulesService', 'Entity'];
 
-    function editTop3101Ctrl($scope, $uibModalInstance, config, appModulesService, Entity) {
+    function editTop3100Ctrl($scope, $uibModalInstance, config, appModulesService, Entity) {
         $scope.cancel = cancel;
         $scope.save = save;
         $scope.config = config;
