@@ -4,68 +4,57 @@
         .module('cybersponse')
         .controller('top3100Ctrl', top3100Ctrl);
 
-    top3100Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope', 'dynamicVariableService'];
-    const EnableGlobalVisiblityBroadcast = 'EnableGlobalVisiblityBroadcast';
+    top3100Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope'];
 
-    function top3100Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope, dynamicVariableService) {
+
+    function top3100Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope) {
         //array of colours for the layers
         $scope.colors = [
             "border-left:4px solid rgba(66, 235, 245, 0.7);background: linear-gradient(90deg, rgba(32, 180, 189, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
-            " border-left:4px solid #DC1982;background: linear-gradient(90deg, rgba(152, 19, 91, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
+            "border-left:4px solid #DC1982;background: linear-gradient(90deg, rgba(152, 19, 91, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
             "border-left:4px solid rgba(65, 41, 203, 0.7); background: linear-gradient(90deg, rgba(45, 17, 209, 0.6) 0%, rgba(10, 31, 46, 0) 100%);"
-        ]   
+        ]
+        var _config = $scope.config;
+
 
         function init() {
-            dynamicVariableService.loadDynamicVariables().then(function (dynamicVariables) {
-                $scope.globalVariables = getObjectById(dynamicVariables, EnableGlobalVisiblityBroadcast);
-                eventListner();
-            });
-            if ($scope.config.moduleType == 'Across Modules') { getTop3records(); }
+            if (_config.moduleType == 'Across Modules') { getTop3records(); }
             else { getRecordsFromCustomModule(); }
         }
         init();
 
-        function getObjectById(data, name) {
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].name === name) {
-                    if (data[i].value === "true") {
-                        return true;
-                    }
-                    else {
-                        return false;
-                    }
-                }
-            }
-            return false; // return false if no object with the given id is found
-        }
 
-        function eventListner(){
-            if($scope.globalVariables){
-                $rootScope.$on('GlobalVisiblityEvent', function (event, data) {
-                    if($scope.config.funnelModuleType == 'Single Module'){
-                        $scope.config.query.filters = [];
-                        $scope.config.query.filters.push(
-                            {
-                                field: "id",
-                                operator: "eq",
-                                type: "primitive",
-                                value: data,
-                                _operator: "eq"
-                            }
-                        )
-                        getRecordsFromCustomModule(true)
-                    }
-                })
-            }
+        if (_config.broadcastEvent) {
+            $rootScope.$on(_config.eventName, function (event, data) {
+                var element = document.getElementById("top3ParentDiv-" + _config.wid);
+                element.style.visibility = 'hidden';
+                element.style.opacity = 0;
+                element.style.transition = 'visibility 0.3s linear,opacity 0.3s linear';
+                if (_config.moduleType == 'Single Module') {
+                    var defer = $q.defer();
+                    $resource(data).get(function (response) {
+                      defer.resolve(response);
+                    }, function (error) {
+                      defer.reject(error);
+                    })
+                    defer.promise.then(function (response) {
+                        formatDataForWidget(true, response[_config.customModuleField])
+                        setTimeout(function () {
+                          element.style.visibility = 'visible';
+                          element.style.opacity = 1;
+                        }, 600);
+                    })
+                }
+            })
         }
 
         function getTop3records() {
             //building query
-            $scope.config.query.sort = [{
+            _config.query.sort = [{
                 field: 'total',
                 direction: 'DESC'
             }];
-            $scope.config.query.aggregates = [
+            _config.query.aggregates = [
                 {
                     'operator': 'countdistinct',
                     'field': '*',
@@ -73,15 +62,15 @@
                 },
                 {
                     'alias': 'type',
-                    'field': $scope.config.groupByPicklistOrLookup + '.itemValue',
+                    'field': _config.groupByPicklistOrLookup + '.itemValue',
                     'operator': 'groupby'
                 }
             ];
-            $scope.config.query.limit = 3;
+            _config.query.limit = 3;
 
-            var _queryObj = new Query($scope.config.query);
+            var _queryObj = new Query(_config.query);
 
-            getResourceData($scope.config.module, _queryObj).then(function (result) {
+            getResourceData(_config.module, _queryObj).then(function (result) {
                 var _dataSource = undefined;
                 if (result && result['hydra:member'] && result['hydra:member'].length > 0) {
                     $scope.res = result['hydra:member'];
@@ -99,45 +88,66 @@
 
         }
 
-        function getRecordsFromCustomModule(changeData) {
+        function getRecordsFromCustomModule() {
             var filters = {
-                query: $scope.config.query
+                query: _config.query
             };
-            var _dataSource = undefined;
-            var pagedTotalData = new PagedCollection($scope.config.module, null, null);
+            var pagedTotalData = new PagedCollection(_config.module, null, null);
             pagedTotalData.loadByPost(filters).then(function () {
-                var data = pagedTotalData.fieldRows[0][$scope.config.customModuleField].value;
-                var nestedKeysArray = $scope.config.keyForCustomModule.split('.');
-                if (nestedKeysArray.length >= 1) {
-                    nestedKeysArray.forEach(function (value) {
-                        data = data[value];
-                    })
-                }
-                if (data === undefined) {
-                    _dataSource = { "Key is invalid... ": "" }
-                }
-                else {
-                    var dataArray = Object.entries(data);
-                    dataArray.sort((a, b) => b[1] - a[1]);
-                    _dataSource = {};
-                    for (var index = 1; index <= Math.min(3, dataArray.length); index++) {
-                        _dataSource[dataArray[index - 1][0]] = $filter('numberToDisplay')(dataArray[index - 1][1]);
-                    }
-                }
-                if (changeData) {
-                    changeInnerData(_dataSource);
-                }
-                else {
-                    createLayers(_dataSource);
-                }
+                var data = pagedTotalData.fieldRows[0][_config.customModuleField].value;
+                // if (_config.keyForCustomModule != "") {
+                //     var nestedKeysArray = _config.keyForCustomModule.split('.');
+                //     nestedKeysArray.forEach(function (value) {
+                //         data = data[value];
+                //     })
+                // }
+                // if (data === undefined) {
+                //     _dataSource = { "Key is invalid... ": "" }
+                // }
+                // else {
+                //     var dataArray = Object.entries(data);
+                //     dataArray.sort((a, b) => b[1] - a[1]);
+                //     _dataSource = {};
+                //     for (var index = 1; index <= Math.min(3, dataArray.length); index++) {
+                //         _dataSource[dataArray[index - 1][0]] = $filter('numberToDisplay')(dataArray[index - 1][1]);
+                //     }
+                // }
+                formatDataForWidget(false, data)
             })
+        }
+
+        function formatDataForWidget(changeData, data){
+            var _dataSource = undefined;
+            if (_config.keyForCustomModule != "") {
+                var nestedKeysArray = _config.keyForCustomModule.split('.');
+                nestedKeysArray.forEach(function (value) {
+                    data = data[value];
+                })
+            }
+            if (data === undefined) {
+                _dataSource = { "Key is invalid... ": "" }
+            }
+            else {
+                var dataArray = Object.entries(data);
+                dataArray.sort((a, b) => b[1] - a[1]);
+                _dataSource = {};
+                for (var index = 1; index <= Math.min(3, dataArray.length); index++) {
+                    _dataSource[dataArray[index - 1][0]] = $filter('numberToDisplay')(dataArray[index - 1][1]);
+                }
+            }
+            if (changeData) {
+                changeInnerData(_dataSource);
+            }
+            else {
+                createLayers(_dataSource);
+            }
         }
 
         function changeInnerData(element) {
             var index = 0;
             for (let [key, value] of Object.entries(element)) {
-                var getInnerNumber = document.getElementById((index + 1) + "-innerNumberElement-" + $scope.config.wid);
-                var getInnerText = document.getElementById((index + 1) + "-innerTextElement-" + $scope.config.wid);
+                var getInnerNumber = document.getElementById((index + 1) + "-innerNumberElement-" + _config.wid);
+                var getInnerText = document.getElementById((index + 1) + "-innerTextElement-" + _config.wid);
                 getInnerText.innerHTML = key;
                 getInnerNumber.innerHTML = value;
                 index++;
@@ -156,7 +166,7 @@
 
         function createLayers(element) {
 
-            var parentDiv = document.getElementById("top3ParentDiv-" + $scope.config.wid);
+            var parentDiv = document.getElementById("top3ParentDiv-" + _config.wid);
 
             var leftBorderElement = document.createElement('div');
             leftBorderElement.setAttribute('class', 'layer-border-left');
@@ -177,16 +187,16 @@
 
                 var innerTextElement = document.createElement('div');
                 innerTextElement.setAttribute('class', 'innder-div-text');
-                innerTextElement.setAttribute('id', (index + 1) + "-innerTextElement-" + $scope.config.wid);
+                innerTextElement.setAttribute('id', (index + 1) + "-innerTextElement-" + _config.wid);
                 innerTextElement.innerHTML = key;
 
-                var innerNumberElement = document.createElement('div', 'inner-div-number');
-                innerNumberElement.setAttribute('class', 'inner-div-number');
-                innerNumberElement.setAttribute('id', (index + 1) + "-innerNumberElement-" + $scope.config.wid);
+                var innerNumberElement = document.createElement('div');
+                innerNumberElement.setAttribute('class', 'inner-div-number padding-right-lg');
+                innerNumberElement.setAttribute('id', (index + 1) + "-innerNumberElement-" + _config.wid);
                 innerNumberElement.innerHTML = value;
 
                 var innerOuterDiv = document.createElement('div');
-                innerOuterDiv.setAttribute('class', 'inner-outer-div display-inline-block');
+                innerOuterDiv.setAttribute('class', 'inner-outer-div display-inline-block display-flex-space-between');
                 innerOuterDiv.setAttribute('id', key + "-innerOuterDiv");
 
                 innerOuterDiv.appendChild(innerTextElement);

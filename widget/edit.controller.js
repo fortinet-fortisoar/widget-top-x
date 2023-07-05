@@ -15,7 +15,8 @@
         $scope.moduleType = {
             type: ['Across Modules', 'Single Module']
         }
-
+        $scope.config.eventName = $scope.config.eventName ? $scope.config.eventName : "";
+        $scope.config.broadcastEvent = $scope.config.broadcastEvent ? $scope.config.broadcastEvent : false;
         $scope.layers = ['1', '2', '3'];
 
         function init() {

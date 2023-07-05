@@ -85,6 +85,25 @@
                                 data-ng-model="config.keyForCustomModule" class="form-control" />
                         </div>
                     </div>
+                    <div>
+                        <span class="checkbox display-inline line-height-15">
+                            <label for="broadcastEvent">
+                                <input id="broadcastEvent" type="checkbox" name="broadcastEvent"
+                                    data-ng-model="config.broadcastEvent">&nbsp;Broadcast Event
+                            </label>
+                            <span data-uib-tooltip="Enter name of event to listen to, this widget will listen to the event if boadcasted" data-tooltip-append-to-body="true"><i
+                                class="icon icon-information font-Size-13"></i></span>
+                        </span>
+                        <div data-ng-if="config.broadcastEvent">
+                            <div class="form-group"
+                                data-ng-class="{ 'has-error': editTop3WidgetForm.eventName.$invalid && editTop3WidgetForm.eventName.$touched }">
+                                <label for="eventName" class="control-label">Event Name<span
+                                        class="text-danger">*</span></label> <input id="eventName" name="eventName" type="text"
+                                    data-ng-model="config.eventName" class="form-control" />
+                                <div data-cs-messages="editTop3WidgetForm.eventName"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

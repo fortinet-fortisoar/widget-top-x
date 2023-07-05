@@ -1,12 +1,11 @@
 .layer-border-left {
     border-radius: 4px;
     height: 73px;
-    width: 350px;
+    width: 85%;
 }
 
 .innder-div-text {
     display: inherit;
-    width: 250px;
 }
 
 .inner-div-number {
