@@ -150,7 +150,7 @@
                                 </label>
                                 <div data-ng-if="config.broadcastEvent">
                                     <div class="form-group"
-                                        data-ng-class="{ 'has-error': editGlobalVisibility.eventName.$invalid && editGlobalVisibility.eventName.$touched }">
+                                        data-ng-class="{ 'has-error': editTopXWidgetForm.eventName.$invalid && editTopXWidgetForm.eventName.$touched }">
                                         <label for="eventName" class="control-label">Event Name<span
                                                 class="text-danger">*</span></label>
                                         <span
@@ -159,7 +159,7 @@
                                                 class="icon icon-information font-Size-13"></i></span>
                                         <input id="eventName" name="eventName" type="text"
                                             data-ng-model="config.eventName" class="form-control" />
-                                        <div data-cs-messages="editGlobalVisibility.eventName"></div>
+                                        <div data-cs-messages="editTopXWidgetForm.eventName"></div>
                                     </div>
                                 </div>
                             </div>
