@@ -1,18 +1,18 @@
 {
-    "name": "top3",
-    "title": "Top 3",
-    "subTitle": "Top 3 Widget",
+    "name": "topX",
+    "title": "Top X",
+    "subTitle": "To display top 3 or 5 based on the condition provided",
     "version": "1.0.0",
+    "help_online": "https://github.com/fortinet-fortisoar/widget-top-x-customers/blob/develop/README.md",
     "metadata": {
         "description": "",
         "pages": [
             "Dashboard"
         ],
         "certified": "No",
-        "publisher": "Community",
+        "publisher": "Fortinet",
         "compatibility": [
             "7.3.1"
         ]
-    },
-    "development": true
+    }
 }

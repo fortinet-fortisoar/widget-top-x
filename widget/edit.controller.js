@@ -2,11 +2,11 @@
 (function () {
     angular
         .module('cybersponse')
-        .controller('editTop3100Ctrl', editTop3100Ctrl);
+        .controller('editTopX100Ctrl', editTopX100Ctrl);
 
-    editTop3100Ctrl.$inject = ['$scope', '$uibModalInstance', 'config', 'appModulesService', 'Entity'];
+    editTopX100Ctrl.$inject = ['$scope', '$uibModalInstance', 'config', 'appModulesService', 'Entity', 'modelMetadatasService'];
 
-    function editTop3100Ctrl($scope, $uibModalInstance, config, appModulesService, Entity) {
+    function editTopX100Ctrl($scope, $uibModalInstance, config, appModulesService, Entity, modelMetadatasService) {
         $scope.cancel = cancel;
         $scope.save = save;
         $scope.config = config;
@@ -15,16 +15,27 @@
         $scope.moduleType = {
             type: ['Across Modules', 'Single Module']
         }
+        $scope.jsonObjModuleList=[];
         $scope.config.eventName = $scope.config.eventName ? $scope.config.eventName : "";
         $scope.config.broadcastEvent = $scope.config.broadcastEvent ? $scope.config.broadcastEvent : false;
-        $scope.layers = ['1', '2', '3'];
+        $scope.toggleArrow = toggleArrow;
 
         function init() {
             appModulesService.load(true).then(function (modules) {
                 $scope.modules = modules;
+                //Create a list of modules with atleast one JSON field
+                modules.forEach((module, index) => {
+                    var moduleMetaData = modelMetadatasService.getMetadataByModuleType(module.type);
+                    for (let fieldIndex = 0; fieldIndex < moduleMetaData.attributes.length; fieldIndex++) {
+                        //Check If JSON field is present in the module
+                        if (moduleMetaData.attributes[fieldIndex].type === "object") {
+                            $scope.jsonObjModuleList.push(module);
+                            break;
+                        }
+                    }
+                })
             })
             $scope.config.query = $scope.config.query ? $scope.config.query : [];
-
         }
         init();
 
@@ -65,14 +76,18 @@
             loadAttributes()
         }
 
+        function toggleArrow() {
+            $scope.toggle = $scope.toggle === undefined ? true : !$scope.toggle;
+        }
+
         function cancel() {
             $uibModalInstance.dismiss('cancel');
         }
 
         function save() {
-            if ($scope.editTop3WidgetForm.$invalid) {
-                $scope.editTop3WidgetForm.$setTouched();
-                $scope.editTop3WidgetForm.$focusOnFirstError();
+            if ($scope.editTopXWidgetForm.$invalid) {
+                $scope.editTopXWidgetForm.$setTouched();
+                $scope.editTopXWidgetForm.$focusOnFirstError();
                 return;
             }
             $uibModalInstance.close($scope.config);

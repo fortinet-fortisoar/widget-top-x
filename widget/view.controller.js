@@ -2,12 +2,12 @@
 (function () {
     angular
         .module('cybersponse')
-        .controller('top3100Ctrl', top3100Ctrl);
+        .controller('topX100Ctrl', topX100Ctrl);
 
-    top3100Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope'];
+    topX100Ctrl.$inject = ['$q', '$scope', 'API', '$resource', 'Query', '$filter', 'PagedCollection', '$rootScope'];
 
 
-    function top3100Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope) {
+    function topX100Ctrl($q, $scope, API, $resource, Query, $filter, PagedCollection, $rootScope) {
         //array of colours for the layers
         $scope.colors = [
             "border-left:4px solid rgba(66, 235, 245, 0.7);background: linear-gradient(90deg, rgba(32, 180, 189, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
@@ -18,37 +18,38 @@
 
 
         function init() {
-            if (_config.moduleType == 'Across Modules') { getTop3records(); }
+            if (_config.moduleType == 'Across Modules') { getTopXrecords(); }
             else { getRecordsFromCustomModule(); }
         }
         init();
 
-
+        //check if this event is supposed to listen to eny of the broadcasted events, if yes then turn the listner up
         if (_config.broadcastEvent) {
-            $rootScope.$on(_config.eventName, function (event, data) {
-                var element = document.getElementById("top3ParentDiv-" + _config.wid);
+            //example widget:globalVisibilityEvent from Record Summary card
+            $rootScope.$on("widget:" + _config.eventName, function (event, data) {
+                var element = document.getElementById("topXParentDiv-" + _config.wid);
                 element.style.visibility = 'hidden';
                 element.style.opacity = 0;
                 element.style.transition = 'visibility 0.3s linear,opacity 0.3s linear';
                 if (_config.moduleType == 'Single Module') {
                     var defer = $q.defer();
                     $resource(data).get(function (response) {
-                      defer.resolve(response);
+                        defer.resolve(response);
                     }, function (error) {
-                      defer.reject(error);
+                        defer.reject(error);
                     })
                     defer.promise.then(function (response) {
-                        formatDataForWidget(true, response[_config.customModuleField])
+                        formatDataForWidget(response[_config.customModuleField])
                         setTimeout(function () {
-                          element.style.visibility = 'visible';
-                          element.style.opacity = 1;
+                            element.style.visibility = 'visible';
+                            element.style.opacity = 1;
                         }, 600);
                     })
                 }
             })
         }
 
-        function getTop3records() {
+        function getTopXrecords() {
             //building query
             _config.query.sort = [{
                 field: 'total',
@@ -95,28 +96,11 @@
             var pagedTotalData = new PagedCollection(_config.module, null, null);
             pagedTotalData.loadByPost(filters).then(function () {
                 var data = pagedTotalData.fieldRows[0][_config.customModuleField].value;
-                // if (_config.keyForCustomModule != "") {
-                //     var nestedKeysArray = _config.keyForCustomModule.split('.');
-                //     nestedKeysArray.forEach(function (value) {
-                //         data = data[value];
-                //     })
-                // }
-                // if (data === undefined) {
-                //     _dataSource = { "Key is invalid... ": "" }
-                // }
-                // else {
-                //     var dataArray = Object.entries(data);
-                //     dataArray.sort((a, b) => b[1] - a[1]);
-                //     _dataSource = {};
-                //     for (var index = 1; index <= Math.min(3, dataArray.length); index++) {
-                //         _dataSource[dataArray[index - 1][0]] = $filter('numberToDisplay')(dataArray[index - 1][1]);
-                //     }
-                // }
-                formatDataForWidget(false, data)
+                formatDataForWidget(data)
             })
         }
 
-        function formatDataForWidget(changeData, data){
+        function formatDataForWidget(data) {
             var _dataSource = undefined;
             if (_config.keyForCustomModule != "") {
                 var nestedKeysArray = _config.keyForCustomModule.split('.');
@@ -135,23 +119,7 @@
                     _dataSource[dataArray[index - 1][0]] = $filter('numberToDisplay')(dataArray[index - 1][1]);
                 }
             }
-            if (changeData) {
-                changeInnerData(_dataSource);
-            }
-            else {
-                createLayers(_dataSource);
-            }
-        }
-
-        function changeInnerData(element) {
-            var index = 0;
-            for (let [key, value] of Object.entries(element)) {
-                var getInnerNumber = document.getElementById((index + 1) + "-innerNumberElement-" + _config.wid);
-                var getInnerText = document.getElementById((index + 1) + "-innerTextElement-" + _config.wid);
-                getInnerText.innerHTML = key;
-                getInnerNumber.innerHTML = value;
-                index++;
-            }
+            createLayers(_dataSource);
         }
 
         function getResourceData(resource, queryObject) {
@@ -166,8 +134,8 @@
 
         function createLayers(element) {
 
-            var parentDiv = document.getElementById("top3ParentDiv-" + _config.wid);
-
+            var parentDiv = document.getElementById("topXParentDiv-" + _config.wid);
+            parentDiv.innerHTML = "";
             var leftBorderElement = document.createElement('div');
             leftBorderElement.setAttribute('class', 'layer-border-left');
             var innerTextElement = document.createElement('div');
