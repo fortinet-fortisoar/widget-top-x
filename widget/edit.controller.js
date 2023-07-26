@@ -19,6 +19,8 @@
         $scope.config.eventName = $scope.config.eventName ? $scope.config.eventName : "";
         $scope.config.broadcastEvent = $scope.config.broadcastEvent ? $scope.config.broadcastEvent : false;
         $scope.toggleArrow = toggleArrow;
+        $scope.pageConfig = [3, 5];
+        $scope.config.queryLimit = $scope.config.queryLimit ? $scope.config.queryLimit : 3;
 
         function init() {
             appModulesService.load(true).then(function (modules) {

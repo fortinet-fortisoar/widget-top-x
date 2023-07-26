@@ -12,7 +12,9 @@
         $scope.colors = [
             "border-left:4px solid rgba(66, 235, 245, 0.7);background: linear-gradient(90deg, rgba(32, 180, 189, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
             "border-left:4px solid #DC1982;background: linear-gradient(90deg, rgba(152, 19, 91, 0.4) 0%, rgba(10, 31, 46, 0) 100%);",
-            "border-left:4px solid rgba(65, 41, 203, 0.7); background: linear-gradient(90deg, rgba(45, 17, 209, 0.6) 0%, rgba(10, 31, 46, 0) 100%);"
+            "border-left:4px solid rgba(65, 41, 203, 0.7); background: linear-gradient(90deg, rgba(45, 17, 209, 0.6) 0%, rgba(10, 31, 46, 0) 100%);",
+            "border-left: 4px solid #DED609;background: linear-gradient(90deg, #DED60966 0%, rgba(10, 31, 46, 0) 100%);",
+            "border-left: 4px solid #21D980;background: linear-gradient(90deg, #1fae6999 0%, rgba(10, 31, 46, 0) 100%);"
         ]
         var _config = $scope.config;
 
@@ -67,8 +69,15 @@
                     'operator': 'groupby'
                 }
             ];
-            _config.query.limit = 3;
-
+            _config.query.limit = _config.queryLimit;
+            _config.query.filters = [
+                {
+                    'field':  _config.groupByPicklistOrLookup + '.itemValue',
+                    'operator': 'isnull',
+                    'type': 'object',
+                    'value': 'false'
+                }
+            ]
             var _queryObj = new Query(_config.query);
 
             getResourceData(_config.module, _queryObj).then(function (result) {
@@ -149,7 +158,7 @@
             for (let [key, value] of Object.entries(element)) {
 
                 var leftBorderElement = document.createElement('div');
-                leftBorderElement.setAttribute('class', 'layer-border-left margin-top-20 display-block margin-left-md');
+                leftBorderElement.setAttribute('class', 'margin-top-20 display-block margin-left-md layer-border-left-'+_config.queryLimit);
                 leftBorderElement.setAttribute('id', key + "-leftBorderElement");
                 leftBorderElement.setAttribute('style', $scope.colors[index])
 
@@ -164,7 +173,7 @@
                 innerNumberElement.innerHTML = value;
 
                 var innerOuterDiv = document.createElement('div');
-                innerOuterDiv.setAttribute('class', 'inner-outer-div display-inline-block display-flex-space-between');
+                innerOuterDiv.setAttribute('class', 'display-inline-block display-flex-space-between inner-outer-div-'+_config.queryLimit);
                 innerOuterDiv.setAttribute('id', key + "-innerOuterDiv");
 
                 innerOuterDiv.appendChild(innerTextElement);

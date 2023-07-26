@@ -10,7 +10,7 @@
     <div class="modal-body">
         <div class="form-group"
             data-ng-class="{ 'has-error': editTopXWidgetForm.title.$invalid && editTopXWidgetForm.title.$touched }">
-            <label for="title" class="control-label">Title<span class="text-danger">*</span></label> <input id="title"
+            <label for="title" class="control-label">Title</label> <input id="title"
                 name="title" type="text" data-ng-model="config.title" class="form-control" />
             <div data-cs-messages="editTopXWidgetForm.title"></div>
         </div>
@@ -42,6 +42,11 @@
                 </div>
             </div>
             <!-- Radio Button End -->
+
+            <div class="form-group">
+                <label for="maxRecordSize" class="control-label">Max Record Limit</label>
+                <select name="maxRecordSize" id="maxRecordSize" class="form-control" style="width:30%" ng-options="size for size in pageConfig" ng-model="config.queryLimit" required></select>
+            </div>
 
             <div data-ng-if="config.moduleType !== undefined">
                 <div id="modulesDropdown" class="form-group" data-ng-if="config.moduleType  === 'Across Modules' "

@@ -1,6 +1,12 @@
-.layer-border-left {
+.layer-border-left-3 {
     border-radius: 4px;
     height: 73px;
+    width: 85%;
+}
+
+.layer-border-left-5 {
+    border-radius: 4px;
+    height: 55px;
     width: 85%;
 }
 
@@ -12,8 +18,14 @@
     display: inherit;
 }
 
-.inner-outer-div {
+.inner-outer-div-3 {
     font-size: 21px;
     padding-top: 24px;
+    padding-left: 10px;
+}
+
+.inner-outer-div-5 {
+    font-size: 17px;
+    padding-top: 19px;
     padding-left: 10px;
 }
