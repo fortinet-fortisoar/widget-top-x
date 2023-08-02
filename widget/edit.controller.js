@@ -23,6 +23,9 @@
         $scope.config.queryLimit = $scope.config.queryLimit ? $scope.config.queryLimit : 3;
 
         function init() {
+            if($scope.config.module){
+                loadAttributes();
+            }
             appModulesService.load(true).then(function (modules) {
                 $scope.modules = modules;
                 //Create a list of modules with atleast one JSON field
@@ -50,21 +53,21 @@
         function loadAttributes() {
             $scope.fields = [];
             $scope.fieldsArray = [];
-            $scope.config.picklistOrLookup = [];
-            $scope.config.jsonFields = [];
+            $scope.picklistOrLookup = [];
+            $scope.jsonFields = [];
             var entity = new Entity($scope.config.module);
             entity.loadFields().then(function () {
                 if ($scope.config.moduleType === 'Across Modules') {
                     for (var key in entity.fields) {
                         if (entity.fields[key].type === "picklist" || entity.fields[key].type === "lookup") {
-                            $scope.config.picklistOrLookup.push(entity.fields[key]);
+                            $scope.picklistOrLookup.push(entity.fields[key]);
                         }
                     }
                 }
                 else {
                     for (var key in entity.fields) {
                         if (entity.fields[key].type === "object") {
-                            $scope.config.jsonFields.push(entity.fields[key]);
+                            $scope.jsonFields.push(entity.fields[key]);
                         }
                     }
                 }

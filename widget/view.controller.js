@@ -20,65 +20,48 @@
 
 
         function init() {
+
+            //check if this event is supposed to listen to eny of the broadcasted events, if yes then turn the listner up
+            if (_config.broadcastEvent) {
+                //example widget:globalVisibilityEvent from Record Summary card
+                $rootScope.$on("widget:" + _config.eventName, function (event, data) {
+                    eventReceived(data);
+                })
+            }
+            //to get data from single JSON record or FSR
             if (_config.moduleType == 'Across Modules') { getTopXrecords(); }
             else { getRecordsFromCustomModule(); }
         }
         init();
 
-        //check if this event is supposed to listen to eny of the broadcasted events, if yes then turn the listner up
-        if (_config.broadcastEvent) {
-            //example widget:globalVisibilityEvent from Record Summary card
-            $rootScope.$on("widget:" + _config.eventName, function (event, data) {
-                var element = document.getElementById("topXParentDiv-" + _config.wid);
-                element.style.visibility = 'hidden';
-                element.style.opacity = 0;
-                element.style.transition = 'visibility 0.3s linear,opacity 0.3s linear';
-                if (_config.moduleType == 'Single Module') {
-                    var defer = $q.defer();
-                    $resource(data).get(function (response) {
-                        defer.resolve(response);
-                    }, function (error) {
-                        defer.reject(error);
-                    })
-                    defer.promise.then(function (response) {
-                        formatDataForWidget(response[_config.customModuleField])
-                        setTimeout(function () {
-                            element.style.visibility = 'visible';
-                            element.style.opacity = 1;
-                        }, 600);
-                    })
-                }
-            })
+
+        function eventReceived(data){
+            var element = document.getElementById("topXParentDiv-" + _config.wid);
+            element.style.visibility = 'hidden';
+            element.style.opacity = 0;
+            element.style.transition = 'visibility 0.3s linear,opacity 0.3s linear';
+            if (_config.moduleType == 'Single Module') {
+                var defer = $q.defer();
+                $resource(data).get(function (response) {
+                    defer.resolve(response);
+                }, function (error) {
+                    defer.reject(error);
+                })
+                defer.promise.then(function (response) {
+                    formatDataForWidget(response[_config.customModuleField])
+                    setTimeout(function () {
+                        element.style.visibility = 'visible';
+                        element.style.opacity = 1;
+                    }, 600);
+                })
+            }
         }
 
         function getTopXrecords() {
-            //building query
-            _config.query.sort = [{
-                field: 'total',
-                direction: 'DESC'
-            }];
-            _config.query.aggregates = [
-                {
-                    'operator': 'countdistinct',
-                    'field': '*',
-                    'alias': 'total'
-                },
-                {
-                    'alias': 'type',
-                    'field': _config.groupByPicklistOrLookup + '.itemValue',
-                    'operator': 'groupby'
-                }
-            ];
-            _config.query.limit = _config.queryLimit;
-            _config.query.filters = [
-                {
-                    'field':  _config.groupByPicklistOrLookup + '.itemValue',
-                    'operator': 'isnull',
-                    'type': 'object',
-                    'value': 'false'
-                }
-            ]
-            var _queryObj = new Query(_config.query);
+            var picklistQuery =  getQuery();
+
+            picklistQuery.filters.push({"filters":  _config.query.filters, "logic": _config.query.logic });
+            var _queryObj = new Query(picklistQuery);
 
             getResourceData(_config.module, _queryObj).then(function (result) {
                 var _dataSource = undefined;
@@ -95,7 +78,37 @@
                     }
                 }
             });
+        }
 
+        //building query
+        function getQuery(){
+            var query = {};
+            query.sort = [{
+                field: 'total',
+                direction: 'DESC'
+            }];
+            query.aggregates = [
+                {
+                    'operator': 'countdistinct',
+                    'field': '*',
+                    'alias': 'total'
+                },
+                {
+                    'alias': 'type',
+                    'field': _config.groupByPicklistOrLookup + '.itemValue',
+                    'operator': 'groupby'
+                }
+            ];
+            query.limit = _config.queryLimit;
+            query.filters = [
+                {
+                    'field':  _config.groupByPicklistOrLookup + '.itemValue',
+                    'operator': 'isnull',
+                    'type': 'object',
+                    'value': 'false'
+                }
+            ]
+            return query;
         }
 
         function getRecordsFromCustomModule() {
