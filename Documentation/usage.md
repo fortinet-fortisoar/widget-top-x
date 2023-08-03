@@ -3,7 +3,7 @@
 
 # Usage
 
-The Top-X Records Widget for FortiSOAR is a powerful and customizable tool designed to provide users with a concise and informative summary of the most relevant data from a selected module. This widget, aptly named "top-x," enables users to quickly identify the top 3 or top 5 records based on a specific field selected within the chosen module.
+The Top-X Records Widget is designed to provide users with a concise and informative summary of the most relevant data from a selected module. This widget, aptly named "top-x," enables users to quickly identify the top 3 or top 5 records based on a specific field selected within the chosen module.
 
 ## Widget Preview and How to Use
 This section details the process to edit the widget and use it with data from a specific record or from across multiple modules.
