@@ -15,10 +15,11 @@
         $scope.moduleType = {
             type: ['Across Modules', 'Single Module']
         }
+        // List of modules containing atleast one JSON field
         $scope.jsonObjModuleList=[];
         $scope.config.eventName = $scope.config.eventName ? $scope.config.eventName : "";
         $scope.config.broadcastEvent = $scope.config.broadcastEvent ? $scope.config.broadcastEvent : false;
-        $scope.toggleArrow = toggleArrow;
+        $scope.toggleAdvancedSettings = toggleAdvancedSettings;
         $scope.pageConfig = [3, 5];
         $scope.config.queryLimit = $scope.config.queryLimit ? $scope.config.queryLimit : 3;
 
@@ -57,6 +58,7 @@
             $scope.jsonFields = [];
             var entity = new Entity($scope.config.module);
             entity.loadFields().then(function () {
+                //optimise this function, use for first and then if
                 if ($scope.config.moduleType === 'Across Modules') {
                     for (var key in entity.fields) {
                         if (entity.fields[key].type === "picklist" || entity.fields[key].type === "lookup") {
@@ -81,7 +83,7 @@
             loadAttributes()
         }
 
-        function toggleArrow() {
+        function toggleAdvancedSettings() {
             $scope.toggle = $scope.toggle === undefined ? true : !$scope.toggle;
         }
 
@@ -97,6 +99,5 @@
             }
             $uibModalInstance.close($scope.config);
         }
-
     }
 })();

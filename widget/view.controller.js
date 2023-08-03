@@ -20,12 +20,11 @@
 
 
         function init() {
-
             //check if this event is supposed to listen to eny of the broadcasted events, if yes then turn the listner up
             if (_config.broadcastEvent) {
                 //example widget:globalVisibilityEvent from Record Summary card
                 $rootScope.$on("widget:" + _config.eventName, function (event, data) {
-                    eventReceived(data);
+                    updateLayers(data);
                 })
             }
             //to get data from single JSON record or FSR
@@ -35,11 +34,12 @@
         init();
 
 
-        function eventReceived(data){
+        function updateLayers(data) {
             var element = document.getElementById("topXParentDiv-" + _config.wid);
             element.style.visibility = 'hidden';
             element.style.opacity = 0;
             element.style.transition = 'visibility 0.3s linear,opacity 0.3s linear';
+            //else condition is not possible, since on click event is possible in case of single module
             if (_config.moduleType == 'Single Module') {
                 var defer = $q.defer();
                 $resource(data).get(function (response) {
@@ -57,71 +57,7 @@
             }
         }
 
-        function getTopXrecords() {
-            var picklistQuery =  getQuery();
-
-            picklistQuery.filters.push({"filters":  _config.query.filters, "logic": _config.query.logic });
-            var _queryObj = new Query(picklistQuery);
-
-            getResourceData(_config.module, _queryObj).then(function (result) {
-                var _dataSource = undefined;
-                if (result && result['hydra:member'] && result['hydra:member'].length > 0) {
-                    $scope.res = result['hydra:member'];
-                    _dataSource = {};
-                    if ($scope.res.length > 0) {
-                        $scope.res.forEach(element => {
-                            if (element.type !== null) {
-                                _dataSource[element.type] = $filter('numberToDisplay')(element.total);
-                            }
-                        });
-                        createLayers(_dataSource);
-                    }
-                }
-            });
-        }
-
-        //building query
-        function getQuery(){
-            var query = {};
-            query.sort = [{
-                field: 'total',
-                direction: 'DESC'
-            }];
-            query.aggregates = [
-                {
-                    'operator': 'countdistinct',
-                    'field': '*',
-                    'alias': 'total'
-                },
-                {
-                    'alias': 'type',
-                    'field': _config.groupByPicklistOrLookup + '.itemValue',
-                    'operator': 'groupby'
-                }
-            ];
-            query.limit = _config.queryLimit;
-            query.filters = [
-                {
-                    'field':  _config.groupByPicklistOrLookup + '.itemValue',
-                    'operator': 'isnull',
-                    'type': 'object',
-                    'value': 'false'
-                }
-            ]
-            return query;
-        }
-
-        function getRecordsFromCustomModule() {
-            var filters = {
-                query: _config.query
-            };
-            var pagedTotalData = new PagedCollection(_config.module, null, null);
-            pagedTotalData.loadByPost(filters).then(function () {
-                var data = pagedTotalData.fieldRows[0][_config.customModuleField].value;
-                formatDataForWidget(data)
-            })
-        }
-
+        //Only to format data in a way that is required by widget
         function formatDataForWidget(data) {
             var _dataSource = undefined;
             if (_config.keyForCustomModule != "") {
@@ -142,6 +78,71 @@
                 }
             }
             createLayers(_dataSource);
+        }
+
+        function getTopXrecords() {
+            var picklistQuery = getQuery();
+
+            picklistQuery.filters.push({ "filters": _config.query.filters, "logic": _config.query.logic });
+            var _queryObj = new Query(picklistQuery);
+
+            getResourceData(_config.module, _queryObj).then(function (result) {
+                var _dataSource = undefined;
+                if (result && result['hydra:member'] && result['hydra:member'].length > 0) {
+                    var res = result['hydra:member'];
+                    _dataSource = {};
+                    //try $filter instead of foreach, loop over result[hydra:member] instead of res
+                    res.forEach(element => {
+                        if (element.type !== null) {
+                            _dataSource[element.type] = $filter('numberToDisplay')(element.total);
+                        }
+                    });
+                    createLayers(_dataSource);
+                }
+            });
+        }
+
+        //building query
+        function getQuery() {
+            //include all keys in query object
+            var query = {};
+            query.sort = [{
+                field: 'total',
+                direction: 'DESC'
+            }];
+            query.aggregates = [
+                {
+                    'operator': 'countdistinct',
+                    'field': '*',
+                    'alias': 'total'
+                },
+                {
+                    'alias': 'type',
+                    'field': _config.groupByPicklistOrLookup + '.itemValue',
+                    'operator': 'groupby'
+                }
+            ];
+            query.limit = _config.queryLimit;
+            query.filters = [
+                {
+                    'field': _config.groupByPicklistOrLookup + '.itemValue',
+                    'operator': 'isnull',
+                    'type': 'object',
+                    'value': 'false'
+                }
+            ]
+            return query;
+        }
+
+        function getRecordsFromCustomModule() {
+            var filters = {
+                query: _config.query
+            };
+            var pagedTotalData = new PagedCollection(_config.module, null, null);
+            pagedTotalData.loadByPost(filters).then(function () {
+                var data = pagedTotalData.fieldRows[0][_config.customModuleField].value;
+                formatDataForWidget(data)
+            })
         }
 
         function getResourceData(resource, queryObject) {
@@ -170,8 +171,9 @@
 
             for (let [key, value] of Object.entries(element)) {
 
+                //create a function for all elements
                 var leftBorderElement = document.createElement('div');
-                leftBorderElement.setAttribute('class', 'margin-top-20 display-block margin-left-md layer-border-left-'+_config.queryLimit);
+                leftBorderElement.setAttribute('class', 'margin-top-20 display-block margin-left-md layer-border-left-' + _config.queryLimit);
                 leftBorderElement.setAttribute('id', key + "-leftBorderElement");
                 leftBorderElement.setAttribute('style', $scope.colors[index])
 
@@ -186,7 +188,7 @@
                 innerNumberElement.innerHTML = value;
 
                 var innerOuterDiv = document.createElement('div');
-                innerOuterDiv.setAttribute('class', 'display-inline-block display-flex-space-between inner-outer-div-'+_config.queryLimit);
+                innerOuterDiv.setAttribute('class', 'display-inline-block display-flex-space-between inner-outer-div-' + _config.queryLimit);
                 innerOuterDiv.setAttribute('id', key + "-innerOuterDiv");
 
                 innerOuterDiv.appendChild(innerTextElement);
