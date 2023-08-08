@@ -15,7 +15,7 @@
             <div data-cs-messages="editTopXWidgetForm.title"></div>
         </div>
         <div>
-            <label for="moduleType" class="control-label">Select Data Source</label><span class="text-danger">*
+            <label for="moduleType" class="control-label padding-top-md">Select Data Source</label><span class="text-danger">*
                 <span
                     data-uib-tooltip="Select the 'Record Containing JSON Data' option if all the records to be rendered are in a single record of a certain field of the module.
                 'Count of Records Across Module' Dataset lets you select the module and it displays the count of records for the module based on the filters given"
@@ -62,7 +62,7 @@
                     </select>
                 </div>
                 <div data-ng-if="config.moduleType === 'Single Module'">
-                    <div class="form-group" data-ng-if="jsonObjModuleList"
+                    <div class="form-group padding-top-md" data-ng-if="jsonObjModuleList"
                         data-ng-class="{ 'has-error': editTopXWidgetForm.customModule.$invalid && editTopXWidgetForm.customModule.$touched }">
                         <label for="customModule" class="control-label">Select Module
                             <span class="text-danger">*</span>
@@ -125,7 +125,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div id='customModuleJsonValue' class="padding-bottom-lg">
+                        <div id='customModuleJsonValue' class="padding-bottom-lg padding-top-lg">
                             <label for="customModuleValue" class="control-label">Enter the key of object to be
                                 rendered. <span
                                     data-uib-tooltip="Leave blank if the record JSON field has data in the required format, else give the key which has the data. "
