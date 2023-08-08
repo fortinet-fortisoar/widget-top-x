@@ -10,8 +10,8 @@
     <div class="modal-body">
         <div class="form-group"
             data-ng-class="{ 'has-error': editTopXWidgetForm.title.$invalid && editTopXWidgetForm.title.$touched }">
-            <label for="title" class="control-label">Title</label> <input id="title"
-                name="title" type="text" data-ng-model="config.title" class="form-control" />
+            <label for="title" class="control-label">Title</label> <input id="title" name="title" type="text"
+                data-ng-model="config.title" class="form-control" />
             <div data-cs-messages="editTopXWidgetForm.title"></div>
         </div>
         <div>
@@ -45,7 +45,8 @@
 
             <div class="form-group">
                 <label for="maxRecordSize" class="control-label">Max Record Limit</label>
-                <select name="maxRecordSize" id="maxRecordSize" class="form-control" style="width:30%" ng-options="size for size in pageConfig" ng-model="config.queryLimit" required></select>
+                <select name="maxRecordSize" id="maxRecordSize" class="form-control" style="width:30%"
+                    ng-options="size for size in pageConfig" ng-model="config.queryLimit" required></select>
             </div>
 
             <div data-ng-if="config.moduleType !== undefined">
@@ -70,8 +71,7 @@
                             data-tooltip-append-to-body="true"><i class="icon icon-information font-Size-13"></i></span>
                         <select name="customModule" id="customModule" class="form-control"
                             data-ng-options="module.type as module.name for module in jsonObjModuleList"
-                            data-ng-model="config.module"
-                            data-ng-change="onModuleChange()" required>
+                            data-ng-model="config.module" data-ng-change="onModuleChange()" required>
                             <option value="">Select an Option</option>
                         </select>
                     </div>
@@ -80,12 +80,14 @@
                 <div id="filterForModule" class="margin-top-md margin-bottom-md"
                     data-ng-if="config.module !== undefined">
                     <label data-ng-if="config.moduleType  == 'Across Modules'" class="control-label">Filter Record
-                        <span class="text-danger">*</span>
                     </label>
                     <label data-ng-if="config.moduleType  == 'Single Module'" class="control-label">Filter Record Which
                         Contains Data
-                        <span class="text-danger">*</span>
+                        <span
+                            data-uib-tooltip="It is recommended to apply filter, that filters out 1 record. If multiple records are filtered with the condition given, first record will be assumed"
+                            data-tooltip-append-to-body="true"><i class="icon icon-information font-Size-13"></i></span>
                     </label>
+
                     <div data-cs-conditional data-ng-if="config.fieldsArray.length > 0" data-fields="config.fields"
                         data-reset-field="config.fields" data-ng-model="config.query"
                         data-parent-form="editTopXWidgetForm"
@@ -111,6 +113,10 @@
                             <div id="customModuleFieldDiv">
                                 <label class="control-label">Select field for data source
                                     <span class="text-danger">*</span>
+                                    <span
+                                        data-uib-tooltip="Select the Field which has the data, only json type fields will be available in the dropdown"
+                                        data-tooltip-append-to-body="true"><i
+                                            class="icon icon-information font-Size-13"></i></span>
                                 </label>
                                 <select class="form-control"
                                     data-ng-options="field.name as field.title for field in jsonFields"
@@ -121,7 +127,10 @@
                         </div>
                         <div id='customModuleJsonValue' class="padding-bottom-lg">
                             <label for="customModuleValue" class="control-label">Enter the key of object to be
-                                rendered.</label>
+                                rendered. <span
+                                    data-uib-tooltip="Leave blank if the record JSON field has data in the required format, else give the key which has the data. "
+                                    data-tooltip-append-to-body="true"><i
+                                        class="icon icon-information font-Size-13"></i></span></label>
                             <input name="customModuleValue" id="customModuleValue" type="text"
                                 data-ng-model="config.keyForCustomModule" class="form-control" />
                         </div>
@@ -130,8 +139,8 @@
                     <uib-accordion>
                         <div uib-accordion-group class="panel-default">
                             <uib-accordion-heading>
-                                <div class=""
-                                    ng-click="toggleAdvancedSettings()" data-ng-class="{'queue-text-active-color': toggle">
+                                <div class="" ng-click="toggleAdvancedSettings()"
+                                    data-ng-class="{'queue-text-active-color': toggle">
                                     <div class="margin-right-lg pull-left"><span class="queue-card-actions">&nbsp;<i
                                                 class="fa {{ toggle ? 'fa-chevron-down' : 'fa-chevron-right'}}"></i></span>
                                     </div>
@@ -145,7 +154,7 @@
                                     class="font-size-12 mp-solutionpack-contents-card margin-right-md">Update
                                     content on receiving event</label>
                                 <span
-                                    data-uib-tooltip="Enable to broadcast an event, after enabling specify the event name foe the listener widget."
+                                    data-uib-tooltip="Enable to listen to an event, after enabling specify the event name the widget to respond. Event name should be similart to the event name specified in the broadcast widget."
                                     data-tooltip-append-to-body="true"><i
                                         class="icon icon-information font-size-12"></i></span>
                                 <label class="switch switch-pill switch-label switch-success padding-top-md">
@@ -162,8 +171,8 @@
                                             data-uib-tooltip="Enable to Listen to an event, after enabling specify the event name for the widget to listen."
                                             data-tooltip-append-to-body="true"><i
                                                 class="icon icon-information font-Size-13"></i></span>
-                                        <input id="eventName" name="eventName" type="text" data-ng-model="config.eventName"
-                                            class="form-control" />
+                                        <input id="eventName" name="eventName" type="text"
+                                            data-ng-model="config.eventName" class="form-control" />
                                         <div data-cs-messages="editTopXWidgetForm.eventName"></div>
                                     </div>
                                 </div>
