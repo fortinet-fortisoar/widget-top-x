@@ -58,7 +58,6 @@
             $scope.jsonFields = [];
             var entity = new Entity($scope.config.module);
             entity.loadFields().then(function () {
-                //optimise this function, use for first and then if
                 if ($scope.config.moduleType === 'Across Modules') {
                     for (var key in entity.fields) {
                         if (entity.fields[key].type === "picklist" || entity.fields[key].type === "lookup") {

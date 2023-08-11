@@ -89,10 +89,8 @@
             getResourceData(_config.module, _queryObj).then(function (result) {
                 var _dataSource = undefined;
                 if (result && result['hydra:member'] && result['hydra:member'].length > 0) {
-                    var res = result['hydra:member'];
                     _dataSource = {};
-                    //try $filter instead of foreach, loop over result[hydra:member] instead of res
-                    res.forEach(element => {
+                    result['hydra:member'].forEach(element => {
                         if (element.type !== null) {
                             _dataSource[element.type] = $filter('numberToDisplay')(element.total);
                         }
@@ -104,33 +102,33 @@
 
         //building query
         function getQuery() {
-            //include all keys in query object
-            var query = {};
-            query.sort = [{
-                field: 'total',
-                direction: 'DESC'
-            }];
-            query.aggregates = [
-                {
-                    'operator': 'countdistinct',
-                    'field': '*',
-                    'alias': 'total'
-                },
-                {
-                    'alias': 'type',
-                    'field': _config.groupByPicklistOrLookup + '.itemValue',
-                    'operator': 'groupby'
-                }
-            ];
-            query.limit = _config.queryLimit;
-            query.filters = [
-                {
-                    'field': _config.groupByPicklistOrLookup + '.itemValue',
-                    'operator': 'isnull',
-                    'type': 'object',
-                    'value': 'false'
-                }
-            ]
+            var query = {
+                'sort':[{
+                    field: 'total',
+                    direction: 'DESC'
+                }],
+                'aggregates': [
+                    {
+                        'operator': 'countdistinct',
+                        'field': '*',
+                        'alias': 'total'
+                    },
+                    {
+                        'alias': 'type',
+                        'field': _config.groupByPicklistOrLookup + '.itemValue',
+                        'operator': 'groupby'
+                    }
+                ],
+                'limit': _config.queryLimit,
+                'filters': [
+                    {
+                        'field': _config.groupByPicklistOrLookup + '.itemValue',
+                        'operator': 'isnull',
+                        'type': 'object',
+                        'value': 'false'
+                    }
+                ]
+            };
             return query;
         }
 
