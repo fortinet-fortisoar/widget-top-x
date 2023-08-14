@@ -7,6 +7,9 @@
     </div>
     <div data-ng-hide="collapsed">
         <div class="padding-left-lg padding-bottom-lg">
+            <div data-ng-if="processing">
+                <cs-spinner></cs-spinner>
+            </div>
             <div id="topXParentDiv-{{config.wid}}">
             </div>
         </div>

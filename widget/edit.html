@@ -17,8 +17,7 @@
         <div>
             <label id="top-x-module-type" for="moduleType" class="control-label padding-top-md">Select Data Source</label><span class="text-danger">*
                 <span
-                    data-uib-tooltip="Select the 'Record Containing JSON Data' option if all the records to be rendered are in a single record of a certain field of the module.
-                'Count of Records Across Module' Dataset lets you select the module and it displays the count of records for the module based on the filters given"
+                    data-uib-tooltip="Select the 'Record Containing JSON Data' option if all the records to be rendered are in a single record of a certain field of the module. 'Count of Records Across Module' Dataset lets you select the module and it displays the count of records for the module based on the filters given"
                     data-tooltip-append-to-body="true"><i class="icon icon-information font-Size-13"></i></span>
             </span>
             <!-- Radio Button -->
@@ -126,11 +125,11 @@
                             </div>
                         </div>
                         <div id='customModuleJsonValue' class="padding-bottom-lg padding-top-lg">
-                            <label for="customModuleValue" class="control-label">Enter the key of object to be
-                                rendered. <span
-                                    data-uib-tooltip="Leave blank if the record JSON field has data in the required format, else give the key which has the data. "
-                                    data-tooltip-append-to-body="true"><i
-                                        class="icon icon-information font-Size-13"></i></span></label>
+                            <label for="customModuleValue" class="control-label">Object key to render<span
+                                data-uib-tooltip="Enter the object key whose value is to be rendered."
+                                data-tooltip-append-to-body="true"><i class="icon icon-information font-Size-13"></i>
+                                </span></label>
+
                             <input name="customModuleValue" id="customModuleValue" type="text"
                                 data-ng-model="config.keyForCustomModule" class="form-control" />
                         </div>

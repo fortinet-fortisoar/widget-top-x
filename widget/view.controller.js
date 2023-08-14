@@ -17,6 +17,7 @@
             "border-left: 4px solid #21D980;background: linear-gradient(90deg, #1fae6999 0%, rgba(10, 31, 46, 0) 100%);"
         ]
         var _config = $scope.config;
+        $scope.processing = false;
 
 
         function init() {
@@ -39,6 +40,8 @@
             element.style.visibility = 'hidden';
             element.style.opacity = 0;
             element.style.transition = 'visibility 0.3s linear,opacity 0.3s linear';
+            $scope.processing = true;
+
             //else condition is not possible, since on click event is possible in case of single module
             if (_config.moduleType == 'Single Module') {
                 var defer = $q.defer();
@@ -49,6 +52,7 @@
                 })
                 defer.promise.then(function (response) {
                     formatDataForWidget(response[_config.customModuleField])
+                    $scope.processing = false;
                     setTimeout(function () {
                         element.style.visibility = 'visible';
                         element.style.opacity = 1;
