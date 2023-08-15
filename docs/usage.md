@@ -58,6 +58,7 @@ Select the field (the field must be of type `JSON`).
 #### Advanded Settings:
 For this feature to work, user need to add a Widget with Broadcasting capability in the same dashboard. eg. (Record Summary Card Widget).
 
+
 Update content on receiving event:
 This toggle button emables the Top X widget to Listen to an on-click event, broadcasted by another widget eg. Record Summary Card.
 Give the exact same event name in this widget, as given to the Record Summary Card widget
