@@ -3,6 +3,7 @@
     "title": "Top X",
     "subTitle": "To display top 3 or 5 based on the condition provided",
     "version": "1.0.0",
+    "published_date": 1692194643,
     "help_online": "https://github.com/fortinet-fortisoar/widget-top-x-customers/blob/develop/README.md",
     "metadata": {
         "description": "",
