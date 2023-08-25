@@ -3,69 +3,90 @@
 
 # Usage
 
-The Top-X Records Widget is designed to provide users with a concise and informative summary of the most relevant data from a selected module. This widget, aptly named "top-x," enables users to quickly identify the top 3 or top 5 records based on a specific field selected within the chosen module.
+The Top-X Records Widget is designed to provide users with a concise and informative summary of the most relevant data from a selected module. This widget, aptly named *Top X*, enables users to quickly identify the top 3 or top 5 records based on a specific field selected within the chosen module.
 
-## Widget Preview and How to Use
+## Top X Widget Edit View
+
 This section details the process to edit the widget and use it with data from a specific record or from across multiple modules.
 
-### Count of Records Across Modules
-Edit a module's (e.g. *Dashboard*) view template and select **Add Widget** button.
+1. Edit a *Dashboard*'s view template and select **Add Widget** button.
 
-Select **Top X** from the list to bring up the **Top X** widget's customization modal.
+2. Select **Top X** from the list to bring up the **Top X** widget's customization modal.
 
-  ![](./res/top-x-edit.png)
+3. Specify the title of the *Top X* chart in the **Title** field.
 
-Max Record Limit: Users have the flexibility to select the number of top records they want to display, either the top 3 or the top 5, depending on their requirements.
+    ![](./res/top-x-edit-view-00.png)
 
-Module Selection: The widget allows users to choose a target module from which they want to fetch data. For example, selecting the "Alerts" module will fetch alerts count.
-
-
-Field Selection: Users can specify a particular field within the selected module to analyze. For instance, they can choose the "type" field to determine the top types of alerts.
-
-Sorting Order: The top records are listed in descending order, making it effortless to identify the most critical or significant data points at a glance.
-
-  ![](./res/top-5.png)
-
+4. Specify the maximum record limit for this widget to display. The available options are:
+    - 3
+    - 5
 
 ### Record containing JSON Data
 
-  ![](./res/edit-view-json.png)
+This option helps retrieve and display data from a record that has values in `JSON` format. Select the **Record containing JSON Data** option if all data to be rendered is in a specific field of the module. The widget has filters to select only that record that meets the filter conditions.
 
-Specify the title of the funnel chart in the **Title** field.
+1. Select **Record containing JSON Data** in the *Select Data Source* field.
 
-Select **Record containing JSON Data** in the *Data Source* field.
+2. Select a module whose records contain `JSON` data, in the **Select Module** field. 
 
-Select a module whose records contain `JSON` data. 
+3. Define filters under the field **Filter Record Which Contains The JSON Data**. The filter conditions should be such that they select only the record that contains the relevant data.
 
-Define filters under the field **Filter Record Which Contains The JSON Data**. The filter conditions should be such that they select only the record that contains the relevant data.
+4. Select the field, whose data is to be displayed, in the **Select field for data source** field. The drop-down lists fields of type `JSON`. For details on editing and creating fields, refer to the *Module Editor* section of the FortiSOAR *Administration Guide*, [here](https://docs.fortinet.com/document/fortisoar/7.4.1/administration-guide/97786/application-editor#Module_Editor).
 
+5. Specify the JSON `key` whose `value` is to be rendered in the **Object key to render** field.
 
-Select the field (the field must be of type `JSON`).
+<table>
+    <thead>
+        <th>Example</th>
+    </thead>
+    <tbody>
+        <td>Consider the following JSON data in one of the record's JSON field:
+            <pre>"TopXAlertData": {
+                "Connector Unavailable": 17,
+                "Other/Unknown": 4,
+                "System Health": 2,
+                "Botnet": 1,
+                "Data Leak": 1
+            }</pre>
+            <p>The following screenshot shows the Top X Widget in action with this JSON data.</p>
+            <p><img src="./res/top-5.png" alt="Top X Widget"></p>
+        </td>
+    </tbody>
+</table>
 
-    *Below is an example of the field's value*:
-    
-```JSON 
-  "topXbyIncidents": {
-    "HR": 11,
-    "Self": 3,
-    "Finance": 6,
-    "Dubai SoC": 4
-  }
-```
+#### Advanced Settings
 
-  In the field, "Enter the key of object to be rendered" contains the main key of the object "topXbyIncidents", if there is no key for the object leave the field blank.
+Under **Advanced Settings**, this widget can be configured to listen to events *broadcasted by another widget in the same dashboard*. An example of a broadcasting widget is *Record Summary Card* widget.
 
-#### Advanded Settings:
-For this feature to work, user need to add a Widget with Broadcasting capability in the same dashboard. eg. (Record Summary Card Widget).
+Make a note of the event name being broadcasted by the widget. Use the exact event name when configuring *Top X*'s event listener.
 
+<table>
+    <tr>
+        <th>IMPORTANT</th><td>The event listening is triggered when you click a <em>Record Summary Card</em>. The <em>Top X</em> widget looks for compatible JSON data in the same record that contains data for the <em>Record Summary Card</em> widget.<br />The <em>Top X</em> widget must be appropriately configured to use data from that record for the event listening to work as intended.</td>
+    </tr>
+</table>
 
-Update content on receiving event:
-This toggle button emables the Top X widget to Listen to an on-click event, broadcasted by another widget eg. Record Summary Card.
-Give the exact same event name in this widget, as given to the Record Summary Card widget
 ![image](./res/advanced-settings.png)
 
+#### Example of a custom module
 
-JSON, edit view and widget, when looked at simultaniously gives a clearer picture
+The following image shows a record containing `JSON` data:
+
+![image](./res/json-data.png)
+
+### Count of Records Across Modules
+
+This option helps retrieve and display data from records across multiple modules. Select the **Count of Records Across Module** option to show data across modules. The widget has filters to select only that record that meets the filter conditions.
+
+1. Select **Count of Records Across Module** in the **Select Data Source** field.
+
+2. Select a module (e.g. *Alert*) in the **Select Module** field.
+
+3. Define filters under the field **Filter Record Which Contains The JSON Data**. The filter conditions should be such that they select only the record that contains the relevant data.
+
+4. Select the field whose values are to be displayed by this widget in the **Select Picklist or Lookup Field**. Only fields of type *Lookup* or *Picklist* are displayed.
+
+  ![](./res/top-5.png)
 
 | [Installation](./setup.md#installation) | [Configuration](./setup.md#configuration) |
 |-----------------------------------------|-------------------------------------------|

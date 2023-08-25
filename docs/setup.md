@@ -11,26 +11,34 @@
 
 The following sections lay out information necessary to customize this widget.
 
+## Top X Widget Settings
+
+### Data Source Selection
+
+| Fields             | Description                                                                            |
+|--------------------|----------------------------------------------------------------------------------------|
+| Title              | Specify the heading or title of the visual depiction of each record node in the group. |
+| Select Data Source | Populate the records with FortiSOAR&trade; modules or data from a single custom module |
+| Max Record Limit   | Specify the maximum number of records for this widget to display.                      |
+| Select Module      | Select the module from which to fetch the JSON data                                    |
+
 ## Record Containing JSON Data
 
-| Fields                                     | Description  |
-|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| JSON Data Source Modules                   | Select the module from which to fetch the data                                                                                                            |
-| Select Field                               | Select the field(Column) of the module which contains the `JSON` data                                                                                     |
-| Filter Record Which Contains The JSON Data | Add conditions to retrieve only the records meeting the filter conditions. If multiple records match the conditions given, the first record is considered.|
+| Fields                                     | Description                                                                                                                                                                          |
+|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Filter Record Which Contains The JSON Data | Add conditions to retrieve only one record. If multiple records match the conditions given, the first record is considered.                                                          |
+| Select field for data source               | Select the field(Column) of the module which contains the `JSON` data                                                                                                                |
+| Enter the key of object to be rendered.    | Leave blank if the JSON field's record has data in the required format, else specify the key containing the relevant data.                                                           |
 **Advanced Settings**
-| Update Content On Receiving Event | Toggle button to enable or disable the Event Listning |
-| Event Name | Enter the event name, the event name should be similar to the event name mentioned in  the broadcasting widget |
+| Update Content On Receiving Event          | Enable to listen to an event. Once enabled, specify the event name for the widget to respond. Event name should be exactly same as the event name specified in the broadcast widget. |
+| Event Name                                 | Enter the event name, the event name should be similar to the event name mentioned in the broadcasting widget                                                                        |
 
 ##  Count of Records Across Module 
 
-| Fields          | Description                                                                                                                     |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------------|
-| Title           | Specify the heading for Top-X            |
-| Data Source     | Select the Module which has JSON data.                     |
-| Filter  Condition | Filter Record Which Contains The JSON Data. It is recommended to apply filter, that filters out 1 record, i.e. by a unique field.                   |
-| Select Field     | Select a field from the module which has the JSON data.|
-|Enter the key of object to be rendered. | Specify the key under which the entire data is present, if the JSON data is already in the required format in the record, then leave the key field empty |
+| Fields                          | Description                                                                                                                                                |
+|---------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Filter Record                   | Add conditions to retrieve only the records meeting the filter conditions. If multiple records match the conditions given, the first record is considered. |
+| Select Picklist or Lookup Field | Select the field whose values are to be displayed by this widget. Only fields of type *Lookup* or *picklist* are displayed.                                |
 
 | [Usage](./usage.md) |
 |---------------------|
