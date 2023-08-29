@@ -1,15 +1,16 @@
 {
     "name": "topX",
     "title": "Top X",
-    "subTitle": "To display top 3 or 5 based on the condition provided",
+    "subTitle": "The Top X widget displays top 3 or 5 values from a selected field within a chosen module.",
     "version": "1.0.0",
     "published_date": 1692194643,
     "help_online": "https://github.com/fortinet-fortisoar/widget-top-x-customers/blob/develop/README.md",
     "metadata": {
-        "description": "The Top-X Records Widget is designed to provide users top 3 of the selected picklist/lookup field from the selected module.",
+        "description": "The Top-X Records Widget is designed to provide users top 3/5 of the selected picklist/lookup field from the selected module.",
         "pages": [
             "Dashboard"
         ],
+        "snapshot": ["https://repo.fortisoar.fortinet.com/fsr-widgets/topX-1.0.0/images/top-5.png"],
         "certified": "No",
         "publisher": "Fortinet",
         "compatibility": [
