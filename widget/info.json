@@ -10,6 +10,7 @@
         "pages": [
             "Dashboard"
         ],
+        "snapshot": ["https://repo.fortisoar.fortinet.com/fsr-widgets/topX-1.0.0/images/top-5.png"],
         "certified": "No",
         "publisher": "Fortinet",
         "compatibility": [
