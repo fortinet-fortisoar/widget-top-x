@@ -72,9 +72,9 @@
                         }
                     }
                 }
-                $scope.config.fields = entity.getFormFields();
+                $scope.fields = entity.getFormFields();
                 angular.extend($scope.fields, entity.getRelationshipFields());
-                $scope.config.fieldsArray = entity.getFormFieldsArray();
+                $scope.fieldsArray = entity.getFormFieldsArray();
             });
         }
 
