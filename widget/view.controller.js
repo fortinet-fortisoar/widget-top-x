@@ -22,7 +22,7 @@
 
         function init() {
             //check if this event is supposed to listen to eny of the broadcasted events, if yes then turn the listner up
-            if (_config.broadcastEvent) {
+            if (_config.broadcastEvent && _config.moduleType == 'Single Module') {
                 //example widget:globalVisibilityEvent from Record Summary card
                 $rootScope.$on("widget:" + _config.eventName, function (event, data) {
                     updateLayers(data);
