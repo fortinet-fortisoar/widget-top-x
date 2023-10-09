@@ -18,7 +18,7 @@
         ]
         var _config = $scope.config;
         $scope.processing = false;
-
+        $scope.filterValidation = false;
 
         function init() {
             //check if this event is supposed to listen to eny of the broadcasted events, if yes then turn the listner up
@@ -71,14 +71,21 @@
                 })
             }
             if (data === undefined) {
-                _dataSource = { "Key is invalid... ": "" }
+                $scope.filterValidation = true;
+                $scope.errorMessage = "Incorrect JSON";
             }
             else {
                 var dataArray = Object.entries(data);
                 dataArray.sort((a, b) => b[1] - a[1]);
                 _dataSource = {};
                 for (var index = 1; index <= Math.min(_config.queryLimit, dataArray.length); index++) {
-                    _dataSource[dataArray[index - 1][0]] = $filter('numberToDisplay')(dataArray[index - 1][1]);
+                    if (!isNaN(dataArray[index - 1][1])){
+                        _dataSource[dataArray[index - 1][0]] = $filter('numberToDisplay')(dataArray[index - 1][1]);
+                    }
+                    else{
+                        $scope.filterValidation = true;
+                        $scope.errorMessage = "Incorrect JSON";
+                    }
                 }
             }
             createLayers(_dataSource);
@@ -152,6 +159,8 @@
             $resource(API.QUERY + resource).save(queryObject.getQueryModifiers(), queryObject.getQuery(true)).$promise.then(function (response) {
                 defer.resolve(response);
             }, function (error) {
+                $scope.filterValidation = true;
+                $scope.errorMessage = "Record Not Found";
                 defer.reject(error);
             });
             return defer.promise;
