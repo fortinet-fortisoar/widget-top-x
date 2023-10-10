@@ -22,18 +22,23 @@ The following sections lay out information necessary to customize this widget.
 | Max Record Limit   | Specify the maximum number of records for this widget to display.                      |
 | Select Module      | Select the module from which to fetch the JSON data                                    |
 
-## Record Containing JSON Data
+### Record Containing JSON Data
 
 | Fields                                     | Description                                                                                                                                                                          |
 |--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Filter Record Which Contains The JSON Data | Add conditions to retrieve only one record. If multiple records match the conditions given, the first record is considered.                                                          |
 | Select field for data source               | Select the field(Column) of the module which contains the `JSON` data                                                                                                                |
 | Enter the key of object to be rendered.    | Leave blank if the JSON field's record has data in the required format, else specify the key containing the relevant data.                                                           |
-**Advanced Settings**
+
+|Advanced Settings|
+|:-|
+
+| Fields                                     | Description                                                                                                                                                                          |
+|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Update Content On Receiving Event          | Enable to listen to an event. Once enabled, specify the event name for the widget to respond. Event name should be exactly same as the event name specified in the broadcast widget. |
 | Event Name                                 | Enter the event name, the event name should be similar to the event name mentioned in the broadcasting widget                                                                        |
 
-##  Count of Records Across Module 
+###  Count of Records Across Modules
 
 | Fields                          | Description                                                                                                                                                |
 |---------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
