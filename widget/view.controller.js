@@ -39,7 +39,6 @@
             var element = document.getElementById("topXParentDiv-" + _config.wid);
             element.style.visibility = 'hidden';
             element.style.opacity = 0;
-            element.style.transition = 'visibility 0.3s linear,opacity 0.3s linear';
             $scope.processing = true;
 
             //else condition is not possible, since on click event is possible in case of single module
